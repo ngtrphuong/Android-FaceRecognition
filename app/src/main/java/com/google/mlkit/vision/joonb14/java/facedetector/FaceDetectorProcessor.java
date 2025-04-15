@@ -35,6 +35,7 @@ import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 import com.google.mlkit.vision.face.FaceLandmark;
+import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -118,7 +119,7 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>> {
       List<List<Float>> centroid_list = new ArrayList<List<Float>>();
       String line = "";
 
-      while((line = br.readLine()) != null){
+      while((line = BoundedLineReader.readLine(br, 5_000_000)) != null){
         List<Float> tmpList = new ArrayList<Float>();
         String[] array = line.split(",");
         Float[] floats = Arrays.stream(array).map(Float::valueOf).toArray(Float[]::new);
@@ -140,7 +141,7 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>> {
       br = new BufferedReader(new InputStreamReader(inputStream));
       List<String> label_list = new ArrayList<String>();
 
-      while((line = br.readLine()) != null){
+      while((line = BoundedLineReader.readLine(br, 5_000_000)) != null){
         label_list.add(line);
       }
       labels = new String[label_list.size()];
